@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+
+    <!--link den file css-->
+    <link rel="stylesheet" href="musicstyle.css">
+
+    <!--Link to fontawesome.com để lấy font,icon đẹp-->
+    <script src="https://kit.fontawesome.com/853cd63263.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="music-player">
+        <nav>
+            <div class="circle">
+                <!--This below is code from fontawesome.com-->
+                <i class="fa-solid fa-angle-left"></i>
+            </div>
+            <div class="circle">
+                <!--This below is code from fontawesome.com-->
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </nav>
+        <img src="Thumbnail/468-thumbnail.png" alt="thumbnail" class="song-img">
+        <h1>Go!</h1>
+        <p>NEFFEX</p>
+
+        <audio controls id="song">
+            <source src="Music/Go! - NEFFEX.mp3" type="audio/mpeg">
+        </audio>
+        <!--Add thanh tien trinh -->
+        <input type="range" value=0 id="progress">
+
+
+        <div class="controls">
+            <button id="prevBtn">
+            <div><i class="fa-solid fa-backward"></i></div>
+            </button>
+            <div onclick="playPause()"><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
+            
+            <button id="nextBtn">
+                <div><i class="fa-solid fa-forward"></i></div>
+            </button>
+        </div>
+        <a href="page2music.html">Trang 2(Test Deezer API)</a>
+    </div>
+
+<!--Nut doi mau -->
+<button id="changeColorBtn">ligh/dark theme.
+    <i class="fa-solid fa-image"></i>
+</button>
+
+<script>
+    let isDark = false;
+
+    const container = document.querySelector('.container');
+    const button = document.getElementById('changeColorBtn');
+
+    button.addEventListener('click', function () {
+        if (isDark) {
+            container.style.backgroundColor = '#fcf0f8'; // màu sáng
+            button.textContent = 'Dark Mode';
+        } else {
+            container.style.backgroundColor = '#333'; // màu tối
+            button.textContent = 'Light Mode';
+        }
+        isDark = !isDark;
+    });
+</script>
+    
+<!--THIS JSscript ADD SLIDER MOVEMENT-->
+<script>
+
+    // declear varible
+    // lay du lieu tu id progress do vo bien progress
+    let progress = document.getElementById("progress");
+    let song = document.getElementById("song");
+    let ctrlIcon = document.getElementById("ctrlIcon");
+
+
+    song.onloadedmetadata = function(){
+        progress.max = song.duration;
+        progress.value = song.currentTime;
+    }
+        
+function playPause(){
+    if(ctrlIcon.classList.contains("fa-pause")){
+        song.pause();
+        ctrlIcon.classList.remove("fa-pause");
+        ctrlIcon.classList.add("fa-play");
+    }
+    else{
+        song.play();
+        ctrlIcon.classList.add("fa-pause");
+        ctrlIcon.classList.remove("fa-play");
+    }
+    
+}
+
+if(song.play()){
+    setInterval(()=>{
+        progress.value = song.currentTime
+    },500);
+}
+
+progress.onchange = function(){
+    song.play();
+    song.currentTime = progress.value;
+    ctrlIcon.classList.add("fa-pause");
+    ctrlIcon.classList.remove("fa-play");
+}
+
+</script>
+
+<!--This JS script add next and pervious song-->
+<script>
+    let title = document.querySelector("h1");
+    let artist = document.querySelector("p");
+    let songImg = document.querySelector(".song-img");
+ 
+    let playlist = [
+        {
+            title: "Go!",
+            artist: "NEFFEX",
+            src: "Music/Go! - NEFFEX.mp3",
+            image: "Thumbnail/468-thumbnail.png"
+        },
+        {
+            title: "Catch Me If I Fall ",
+            artist: "NEFFEX",
+            src: "Music/Catch Me If I Fall - NEFFEX.mp3",
+            image: "Thumbnail/Catch Me If I Fall - NEFFEX.jpg"
+        },
+        
+        // add them neu muon
+        //{
+            //title: "Losing My Mind",
+            //artist: "NEFFEX",
+            //src: "Music/Losing My Mind - NEFFEX.mp3",
+            //image: "Thumbnail/Losing My Mind - NEFFEX.jpg"
+        //},
+
+        //{
+           // title: "Lumière",
+            //artist: "Lorien Testard and Alice Duport-Percier",
+            //src: "Music/Lumière.mp3",
+            //image: "Thumbnail/Clair-Obscur-Expedition-33-Billboard_Lumiere.jpg"
+        //},
+        //{
+            //title: "Alicia",
+            //artist: "Lorien Testard and Alice Duport-Percier",
+            //src: "Music/Clair Obscur_ Expedition 33 (Original Soundtrack) 01 - Alicia.mp3",
+            //image: "Thumbnail/alicia thumbnail.jpg"
+        //}
+    ];
+
+    let currentTrack = 0;
+    function loadTrack(index) {
+        let track = playlist[index];
+        song.src = track.src;
+        title.textContent = track.title;
+        artist.textContent = track.artist;
+        songImg.src = track.image;
+        song.load();
+        song.play();
+        ctrlIcon.classList.add("fa-pause");
+        ctrlIcon.classList.remove("fa-play");
+    }
+
+    function playPause(){
+        if(ctrlIcon.classList.contains("fa-pause")){
+            song.pause();
+            ctrlIcon.classList.remove("fa-pause");
+            ctrlIcon.classList.add("fa-play");
+        } else {
+            song.play();
+            ctrlIcon.classList.add("fa-pause");
+            ctrlIcon.classList.remove("fa-play");
+        }
+    }
+
+    // Cập nhật progress liên tục khi bài hát đang phát
+    song.addEventListener("timeupdate", () => {
+        progress.value = song.currentTime;
+    });
+
+    song.onloadedmetadata = function(){
+        progress.max = song.duration;
+        progress.value = song.currentTime;
+    }
+
+    progress.onchange = function(){
+        song.currentTime = progress.value;
+        song.play();
+        ctrlIcon.classList.add("fa-pause");
+        ctrlIcon.classList.remove("fa-play");
+    }
+
+    // Xử lý next
+    document.getElementById("nextBtn").addEventListener("click", () => {
+        currentTrack = (currentTrack + 1) % playlist.length;
+        loadTrack(currentTrack);
+    });
+
+    // Xử lý previous
+    document.getElementById("prevBtn").addEventListener("click", () => {
+        currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
+        loadTrack(currentTrack);
+    });
+
+
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,177 @@
+/*This add all element*/
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+.container{
+    width: 100%;
+    height: 100vh; /*vh= viewport height*/
+    background: #333;
+
+    /*this move the div to the center*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.music-player{
+    background-color: #ffe0e5;
+    width: 400px;
+    padding: 25px 35px;
+    text-align: center;
+}
+
+
+nav{
+    /*this align the incon in the div*/
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 30px;/*add some space add the bottom*/
+}
+
+/*apply css to .circle class inside nav tags*/
+nav .circle{
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background: #fff;
+    color: #f53192;
+    box-shadow: 0,5px,10px,rgba(255, 26, 26, 0.22);
+
+}
+
+/*apply css to image (song-img class)*/
+.song-img{
+    width: 220px;
+    border-radius: 50%;
+    border: 8px solid #fff;
+    box-shadow: 0 10px 60px rgba(255, 26, 26, 0.22);
+}
+
+/*apply css to h1 in music-player class*/
+.music-player h1{
+    font-size: 20px;
+    font-weight: 400;
+    color: #333;
+    margin-top: 20px;
+}
+
+.music-player p{
+    font-size: 14px;
+    color: #333;
+}
+
+#progress{
+    -webkit-appearance: none;/*This hide the default slide*/
+    width: 100%;
+    height: 6px;
+    background: #f53192;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 40px 0;
+}
+
+#progress::-webkit-slider-thumb{
+    -webkit-appearance: none;/*This hide the default slide*/
+    background: #f53192;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    border: 8px solid #fff;
+    box-shadow: 0 5px 5px rgba(255, 26, 26, 0.22);
+
+
+}
+
+
+
+
+.controls{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.controls div{
+    width: 60px;
+    height: 60px;
+    margin: 20px;
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #f53192;
+    box-shadow: 0 10px 20px rgba(255, 26, 26, 0.22);
+    cursor: pointer;
+}
+/*tang nut play len 150%*/
+.controls div:nth-child(2){
+    transform: scale(1.5);
+    /*this make icon more pink*/
+    background: #f53192;;
+    color: #fff;
+}
+
+
+@keyframes rotate{
+/* a full rotation by the z-axis*/
+100%{transform: rotateZ(360deg)}
+}
+
+img{
+    animation-name: rotate;
+    animation-duration: 60s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;/*This create a constant speed*/
+}
+
+
+#changeColorBtn {
+    /*make button go up*/
+    margin-top: 20px;
+    align-self: flex-start;
+}
+
+
+
+
+
+/* CSS styling for button lay tren https://getcssscan.com/css-buttons-examples*/
+#changeColorBtn {
+  align-items: center;
+  background-image: linear-gradient(144deg,#fcf0f8, hsl(288, 67%, 65%) 50%,#625863);
+  border: 0;
+  border-radius: 8px;
+  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  display: flex;
+  font-family: Phantomsans, sans-serif;
+  font-size: 20px;
+  justify-content: center;
+  line-height: 1em;
+  max-width: 100%;
+  min-width: 140px;
+  padding: 19px 24px;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+#changeColorBtn:active,
+#changeColorBtn:hover {
+  outline: 0;
+}
+
+
+
