@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rhythm Game - LEVEL 3</title>
+  <style>
+    body {
+      background: #000;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    #game {
+      width: 400px;
+      height: 500px;
+      margin: 20px auto;
+      display: flex;
+      background: #222;
+      border: 2px solid white;
+    }
+    .lane {
+      flex: 1;
+      position: relative;
+      border-left: 1px solid #444;
+    }
+    .note {
+      width: 100%;
+      height: 30px;
+      background: #f53b57;
+      border-radius: 6px;
+      position: absolute;
+    }
+    .target {
+      position: absolute;
+      bottom: 60px;
+      height: 5px;
+      width: 100%;
+      background: #00d8ff;
+    }
+    #score {
+      font-size: 20px;
+      margin: 10px;
+    }
+    /*flash onhit effect*/
+    .flash {
+        animation: flashEffect 0.15s;
+    }
+
+    @keyframes flashEffect {
+    0% { background-color: white; }
+    100% { background-color: #222; }
+    }
+  </style>
+</head>
+<body>
+  <h2>🎵 Rhythm Game LEVEL 3 - Hard</h2>
+  <audio id="music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
+  <button onclick="startGame()">Start LEVEL 3</button>
+  <div id="score">Score: 0</div>
+  <a href="music_game4mobile.html"> LEVEL 4-></a>
+
+  <div id="game">
+    <div class="lane" id="lane-W"><div class="target">W</div></div>
+    <div class="lane" id="lane-A"><div class="target">A</div></div>
+    <div class="lane" id="lane-S"><div class="target">S</div></div>
+    <div class="lane" id="lane-D"><div class="target">D</div></div>
+  </div>
+
+  <!-- Touch controls -->
+  <div>
+    <p>Touch Controls:</p>
+    <button onclick="handleTouch('W')">W</button>
+    <button onclick="handleTouch('A')">A</button>
+    <button onclick="handleTouch('S')">S</button>
+    <button onclick="handleTouch('D')">D</button>
+  </div>
+
+  <script>
+    const music = document.getElementById("music");
+    const scoreEl = document.getElementById("score");
+    const lanes = {
+      W: document.getElementById("lane-W"),
+      A: document.getElementById("lane-A"),
+      S: document.getElementById("lane-S"),
+      D: document.getElementById("lane-D"),
+    };
+    let notes = [];
+    let score = 0;
+    let playing = false;
+
+    function createNote(key, delay) {
+      const note = document.createElement("div");
+      note.className = "note";
+      note.dataset.key = key;
+      note.spawnTime = performance.now() + delay;
+      lanes[key].appendChild(note);
+      notes.push(note);
+    }
+
+    function startGame() {
+      if (playing) return;
+      playing = true;
+      score = 0;
+      scoreEl.textContent = "Score: 0";
+      music.currentTime = 0;
+      music.play();
+      notes = [];
+
+      const keys = ["W", "A", "S", "D"];
+      let time = 0;
+      for (let i = 0; i < 80; i++) {
+        const key = keys[Math.floor(Math.random() * keys.length)];
+        createNote(key, time);
+        time += 500; // Faster notes
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    function update(now) {
+      notes.forEach((note, i) => {
+        const elapsed = now - note.spawnTime + 10;
+        const y = (elapsed / 1400) * 420; // Faster fall
+        if (y > 500) {
+          note.remove();
+          notes.splice(i, 1);
+        } else {
+          note.style.top = y + "px";
+        }
+      });
+
+      if (notes.length > 0) {
+        requestAnimationFrame(update);
+      } else {
+        playing = false;
+        alert("Your Score: " + score);
+        if (score > 3000) {
+          alert("🔥 You passed LEVEL 3!");
+        } else {
+          alert("😢 You lost. Try again!");
+        }
+      }
+    }
+
+    function handleInput(key) {
+    if (!lanes[key]) return;
+    for (let i = 0; i < notes.length; i++) {
+        const note = notes[i];
+        if (note.dataset.key === key) {
+        const y = parseFloat(note.style.top);
+        if (y >= 380 && y <= 460) {
+            score += 100;
+            scoreEl.textContent = "Score: " + score;
+            note.remove();
+            notes.splice(i, 1);
+
+            // Flash the lane
+            flashLane(key);
+            break;
+        }
+        }
+    }
+    }
+
+    function flashLane(key) {
+    const lane = lanes[key];
+    lane.classList.add("flash");
+    setTimeout(() => {
+        lane.classList.remove("flash");
+    }, 150);
+    }
+
+    function handleTouch(key) {
+      handleInput(key);
+    }
+
+    window.addEventListener("keydown", (e) => {
+      handleInput(e.key.toUpperCase());
+    });
+  </script>
+</body>
+</html>
