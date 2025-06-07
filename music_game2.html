@@ -40,6 +40,15 @@
     #score {
       font-size: 20px;
     }
+     /*add flash effect when hit*/
+    .flash {
+      animation: flashEffect 0.15s;
+    }
+
+    @keyframes flashEffect {
+      0% { background-color: white; }
+      100% { background-color: #222; }
+    }
   </style>
 
    <!--put <link> tags here to implement External CSS -->
@@ -58,14 +67,6 @@
     <div class="lane" id="lane-D"><div class="target">D</div></div>
   </div>
 
-<!--Nut bam cho người dùng điện thoại-->
-    <div style="margin-top: 0px;">
-      <p>Touch Controls:</p>
-      <button style="width: 170px;height: 40px;" onclick="handleTouch('W')">W</button>
-      <button style="width: 170px;height: 40px;" onclick="handleTouch('A')">A</button>
-      <button style="width: 170px;height: 40px;" onclick="handleTouch('S')">S</button>
-      <button style="width: 170px;height: 40px;" onclick="handleTouch('D')">D</button>
-    </div>
   <script>
     const music = document.getElementById("music");
     const scoreEl = document.getElementById("score");
@@ -143,44 +144,39 @@
       
     }
 
+    // Keyboard input
     window.addEventListener("keydown", (e) => {
       const key = e.key.toUpperCase();
-      if (!lanes[key]) return;
-
-      for (let i = 0; i < notes.length; i++) {
-        const note = notes[i];
-        if (note.dataset.key === key) {
-          const y = parseFloat(note.style.top);
-          if (y >= 380 && y <= 460) {
-            score += 100;
-            scoreEl.textContent = "Score: " + score;
-            note.remove();
-            notes.splice(i, 1);
-            break;
-          }
-        }
-      }
+      handleInput(key);
     });
 
+  function handleInput(key) {
+    if (!lanes[key]) return;
+    for (let i = 0; i < notes.length; i++) {
+      const note = notes[i];
+      if (note.dataset.key === key) {
+        const y = parseFloat(note.style.top);
+        if (y >= 380 && y <= 460) {
+          score += 100;
+          scoreEl.textContent = "Score: " + score;
+          note.remove();
+          notes.splice(i, 1);
 
-        //hàm handleTouch ho tro xu ly input cho người dùng điện thoại
-    function handleTouch(key) {
-  if (!lanes[key]) return;
-
-  for (let i = 0; i < notes.length; i++) {
-    const note = notes[i];
-    if (note.dataset.key === key) {
-      const y = parseFloat(note.style.top);
-      if (y >= 380 && y <= 460) {
-        score += 100;
-        scoreEl.textContent = "Score: " + score;
-        note.remove();
-        notes.splice(i, 1);
-        break;
+          // Flash the lane
+          flashLane(key);
+          break;
+        }
       }
     }
   }
-}
+
+  function flashLane(key) {
+    const lane = lanes[key];
+    lane.classList.add("flash");
+    setTimeout(() => {
+      lane.classList.remove("flash");
+    }, 150);
+  }
   </script>
 </body>
 </html>
