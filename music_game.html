@@ -40,6 +40,28 @@
     #score {
       font-size: 20px;
     }
+    /*touch control for moblie*/
+    .touch-controls {
+      display: none;
+      margin-top: 10px;
+    }
+    .touch-controls button {
+      width: 170px;
+      height: 40px;
+      margin: 5px;
+    }
+    .hide-on-touch {
+      display: block;
+    }
+    @media (pointer: coarse) {
+      .touch-controls {
+        display: block;
+      }
+      .hide-on-touch {
+        display: none;
+      }
+    }
+
     /*add flash effect when hit*/
     .flash {
       animation: flashEffect 0.15s;
@@ -56,6 +78,7 @@
 </head>
 <body>
   <h2>🎵 Simple Rhythm Game LEVEL 1 - WASD</h2>
+  <h2 class="touch-controls">🎵 Simple Rhythm Game LEVEL 1 - Touch Mode</h2>
   <audio id="music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
   <button onclick="startGame()">Start</button>
   <div id="score">Score: 0</div>
@@ -68,6 +91,7 @@
     <div class="lane" id="lane-D"><div class="target">D</div></div>
   </div>
 
+  
   
   <script>
     const music = document.getElementById("music");
@@ -118,7 +142,8 @@
         // now - note.spawnTime + 10;
         // + cang nhieu chay cang nhanh VD: + 100 chay nhanh hon + 10
         const elapsed = now - note.spawnTime + 10;
-        const y = (elapsed / 1500) * 420;
+        //To make Level 1 slower, increase the elapsed / 1500 EX: elapsed / 2000==> is slower than elapsed / 1500
+        const y = (elapsed / 2000) * 420;
         if (y > 500) {
           note.remove();
           notes.splice(i, 1);
@@ -145,7 +170,8 @@
       }
       
     }
-   // Keyboard input
+
+    // Keyboard input
     window.addEventListener("keydown", (e) => {
       const key = e.key.toUpperCase();
       handleInput(key);
@@ -169,6 +195,14 @@
         }
       }
     }
+  }
+
+  function flashLane(key) {
+    const lane = lanes[key];
+    lane.classList.add("flash");
+    setTimeout(() => {
+      lane.classList.remove("flash");
+    }, 150);
   }
 
 
