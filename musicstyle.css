@@ -173,5 +173,53 @@ img{
   outline: 0;
 }
 
+/*Hieu ung cho character id=boy_character */
+#boy_character {
+  position: absolute;
+  bottom: 0px; 
+  left: 100px;
+  width: 80px;
+  height: auto;
+  transition: left 1s linear;
+}
 
+/*lay name(the) img cua id=boy_character */
+#boy_character img {
+  width: 100%;
+  height: auto;
+  transform: scaleX(1); /* Face right initially(luon luon nhin ve ben phai X duong) */
+}
+
+
+#boy_character p{
+ display: none;/*khong hien thi <p> id=boy_character*/
+}
+
+#boy_character:hover p{
+    display: block;/*hien thi <p> id=boy_character khi hover */
+}
+
+/*Hieu ung cho character id=girlwithheadphone */
+#girlwithheadphone {
+  position: absolute;
+  bottom: 10px; 
+  left: 100px;
+  width: 80px;
+  height: auto;
+}
+
+/*lay name(the) img cua id=girlwithheadphone */
+#girlwithheadphone img {
+  width: 100%;
+  height: auto;
+  transform: scale(1.3); /* Face right initially(luon luon nhin ve ben phai X duong) */
+}
+
+#girlwithheadphone p{
+ display: none;/*khong hien thi <p> id=girlwithheadphone*/
+}
+
+#girlwithheadphone:hover p{
+    display: block;/*hien thi <p> id=girlwithheadphone khi hover */
+}
 
